@@ -316,9 +316,9 @@ class BroadcastServer(object):
             bchost = Pyro4.config.NS_BCHOST
         if ":" in nsUri.host:  # ipv6
             bchost = bchost or "::"
-            self.sock = Pyro4.socketutil.createBroadcastSocket((bchost, bcport, 0, 0), reuseaddr=Pyro4.config.SOCK_REUSE, timeout=2.0)
+            self.sock = Pyro4.config.CREATE_BROADCAST_SOCKET_METHOD((bchost, bcport, 0, 0), reuseaddr=Pyro4.config.SOCK_REUSE, timeout=2.0)
         else:
-            self.sock = Pyro4.socketutil.createBroadcastSocket((bchost, bcport), reuseaddr=Pyro4.config.SOCK_REUSE, timeout=2.0)
+            self.sock = Pyro4.config.CREATE_BROADCAST_SOCKET_METHOD((bchost, bcport), reuseaddr=Pyro4.config.SOCK_REUSE, timeout=2.0)
         self._sockaddr = self.sock.getsockname()
         bchost = bchost or self._sockaddr[0]
         bcport = bcport or self._sockaddr[1]
@@ -470,7 +470,7 @@ def locateNS(host=None, port=None, broadcast=True, hmac_key=None):
             if not port:
                 port = Pyro4.config.NS_BCPORT
             log.debug("broadcast locate")
-            sock = Pyro4.socketutil.createBroadcastSocket(reuseaddr=Pyro4.config.SOCK_REUSE, timeout=0.7)
+            sock = Pyro4.config.CREATE_BROADCAST_SOCKET_METHOD(reuseaddr=Pyro4.config.SOCK_REUSE, timeout=0.7)
             for _ in range(3):
                 try:
                     for bcaddr in Pyro4.config.parseAddressesString(Pyro4.config.BROADCAST_ADDRS):

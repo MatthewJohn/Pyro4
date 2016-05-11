@@ -13,6 +13,7 @@ import platform
 import pickle
 import socket
 import Pyro4.constants
+import socketutil
 
 
 class Configuration(object):
@@ -24,7 +25,8 @@ class Configuration(object):
                  "BROADCAST_ADDRS", "NATHOST", "NATPORT", "MAX_MESSAGE_SIZE",
                  "FLAME_ENABLED", "SERIALIZER", "SERIALIZERS_ACCEPTED", "LOGWIRE",
                  "METADATA", "REQUIRE_EXPOSE", "USE_MSG_WAITALL", "JSON_MODULE",
-                 "MAX_RETRIES", "DILL_PROTOCOL_VERSION")
+                 "MAX_RETRIES", "DILL_PROTOCOL_VERSION", "CREATE_SOCKET_METHOD",
+                 "CREATE_BROADCAST_SOCKET_METHOD")
 
     def __init__(self):
         self.reset()
@@ -74,6 +76,10 @@ class Configuration(object):
         self.USE_MSG_WAITALL = hasattr(socket, "MSG_WAITALL") and platform.system() != "Windows"      # not reliable on windows even though it is defined
         self.JSON_MODULE = "json"
         self.MAX_RETRIES = 0
+
+        # Custom methods for handling sockets
+        self.CREATE_SOCKET_METHOD = socketutil.createSocket
+        self.CREATE_BROADCAST_SOCKET_METHOD = socketutil.createBroadcastSocket
 
         if useenvironment:
             # process environment variables

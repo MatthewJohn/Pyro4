@@ -110,7 +110,7 @@ class SocketServer_Threadpool(object):
         self.daemon = daemon
         self.sock = None
         bind_location = unixsocket if unixsocket else (host, port)
-        self.sock = socketutil.createSocket(bind=bind_location, reuseaddr=Pyro4.config.SOCK_REUSE, timeout=Pyro4.config.COMMTIMEOUT, noinherit=True, nodelay=Pyro4.config.SOCK_NODELAY)
+        self.sock = Pyro4.config.CREATE_SOCKET_METHOD(bind=bind_location, reuseaddr=Pyro4.config.SOCK_REUSE, timeout=Pyro4.config.COMMTIMEOUT, noinherit=True, nodelay=Pyro4.config.SOCK_NODELAY)
         self._socketaddr = self.sock.getsockname()
         if not unixsocket and self._socketaddr[0].startswith("127."):
             if host is None or host.lower() != "localhost" and not host.startswith("127."):
@@ -215,7 +215,7 @@ class SocketServer_Threadpool(object):
 def interruptSocket(address):
     """bit of a hack to trigger a blocking server to get out of the loop, useful at clean shutdowns"""
     try:
-        sock = socketutil.createSocket(connect=address, keepalive=False, timeout=None)
+        sock = Pyro4.config.CREATE_SOCKET_METHOD(connect=address, keepalive=False, timeout=None)
         socketutil.triggerSocket(sock)
         try:
             sock.shutdown(socket.SHUT_RDWR)

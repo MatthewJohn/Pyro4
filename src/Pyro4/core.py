@@ -462,7 +462,7 @@ class Proxy(object):
                 try:
                     if self._pyroConnection is not None:
                         return False  # already connected
-                    sock = socketutil.createSocket(connect=connect_location, reuseaddr=Pyro4.config.SOCK_REUSE, timeout=self.__pyroTimeout, nodelay=Pyro4.config.SOCK_NODELAY)
+                    sock = Pyro4.config.CREATE_SOCKET_METHOD(connect=connect_location, reuseaddr=Pyro4.config.SOCK_REUSE, timeout=self.__pyroTimeout, nodelay=Pyro4.config.SOCK_NODELAY)
                     conn = socketutil.SocketConnection(sock, uri.object)
                     # Do handshake.
                     serializer = util.get_serializer(Pyro4.config.SERIALIZER)
