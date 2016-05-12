@@ -177,7 +177,7 @@ class SocketServer_Threadpool(object):
                 self.pool.process(job)
             except NoFreeWorkersError:
                 job.denyConnection("no free workers, increase server threadpool size")
-        except socket.timeout:
+        except Exception:
             pass  # just continue the loop on a timeout on accept
 
     def close(self):
