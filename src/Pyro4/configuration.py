@@ -13,7 +13,7 @@ import platform
 import pickle
 import socket
 import Pyro4.constants
-import socketutil
+from Pyro4 import socketutil
 
 
 class Configuration(object):
